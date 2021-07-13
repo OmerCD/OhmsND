@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MongoDB.Driver" Version="2.12.4" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="MongoORM4NetCore.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="MongoORM4NetCore.pdb">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MongoORM4NetCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>MongoORM4NetCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OhmsND.Core\OhmsND.Core.csproj" />
+      <ProjectReference Include="..\OhmsND.Infrastructure\OhmsND.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
