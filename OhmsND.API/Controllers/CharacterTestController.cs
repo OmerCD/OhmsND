@@ -7,28 +7,35 @@ using MongoDB.Bson;
 using MongoORM4NetCore;
 using MongoORM4NetCore.Interfaces;
 using OhmsND.Core.Entities.Mongo;
+using OhmsND.Infrastructure.Abstractions.Services;
 using OhmsND.Infrastructure.Services;
 
 namespace OhmsND.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class CharacterTestController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<CharacterTestController> _logger;
         private readonly IRepository<Character> _repository;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IRepository<Character> repository)
+        private readonly ICharacterService _characterService;
+        public CharacterTestController(ILogger<CharacterTestController> logger, IRepository<Character> repository, ICharacterService characterService)
         {
             _logger = logger;
             _repository = repository;
+            _characterService = characterService;
         }
 
+        [HttpPost("random")]
+        public IActionResult CreateRandom()
+        {
+            return Ok(_characterService.Create());
+        }
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            return Ok(_repository.GetAll(new BsonDocument()));
+        }
         [HttpGet("read")]
         public IActionResult Read()
         {
@@ -69,7 +76,7 @@ namespace OhmsND.API.Controllers
             var character = new Character()
             {
                 Attributes = attributes,
-                Classes = new List<Class>
+                Classes = new List<CharacterClass>
                 {
                     new ()
                     {

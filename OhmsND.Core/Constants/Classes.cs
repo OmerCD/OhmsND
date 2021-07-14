@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using static OhmsND.Core.Constants.ClassIndexNames;
 
 namespace OhmsND.Core.Constants
 {
@@ -8,88 +10,88 @@ namespace OhmsND.Core.Constants
         public static DndClass Warlock { get; } = new()
         {
             Name = "Warlock",
-            IndexName = "warlock",
+            IndexName = IndexNameWarlock,
             HitDie = 8
         };
 
         public static DndClass Barbarian { get; } = new()
         {
             Name = "Barbarian",
-            IndexName = "barbarian",
+            IndexName = IndexNameBarbarian,
             HitDie = 12
         };
 
         public static DndClass Bard { get; } = new()
         {
             Name = "Bard",
-            IndexName = "bard",
+            IndexName = IndexNameBard,
             HitDie = 8
         };
 
         public static DndClass Rouge { get; } = new()
         {
             Name = "Rouge",
-            IndexName = "rouge",
+            IndexName = IndexNameRouge,
             HitDie = 8
         };
 
         public static DndClass Wizard { get; } = new()
         {
             Name = "Wizard",
-            IndexName = "wizard",
+            IndexName = IndexNameWizard,
             HitDie = 6
         };
 
         public static DndClass Monk { get; } = new()
         {
             Name = "Monk",
-            IndexName = "monk",
+            IndexName = IndexNameMonk,
             HitDie = 8
         };
 
         public static DndClass Cleric { get; } = new()
         {
             Name = "Cleric",
-            IndexName = "cleric",
+            IndexName = IndexNameCleric,
             HitDie = 8
         };
 
         public static DndClass Druid { get; } = new()
         {
             Name = "Druid",
-            IndexName = "druid",
+            IndexName = IndexNameDruid,
             HitDie = 8
         };
 
         public static DndClass Fighter { get; } = new()
         {
             Name = "Fighter",
-            IndexName = "fighter",
+            IndexName = IndexNameFighter,
             HitDie = 10
         };
 
         public static DndClass Paladin { get; } = new()
         {
             Name = "Paladin",
-            IndexName = "paladin",
+            IndexName = IndexNamePaladin,
             HitDie = 10
         };
 
         public static DndClass Ranger { get; } = new()
         {
             Name = "Ranger",
-            IndexName = "ranger",
+            IndexName = IndexNameRanger,
             HitDie = 10
         };
 
         public static DndClass Sorcerer { get; } = new()
         {
             Name = "Sorcerer",
-            IndexName = "sorcerer",
+            IndexName = IndexNameSorcerer,
             HitDie = 6
         };
 
-        public static IDictionary<string, DndClass> IndexToClasses;
+        public static readonly IDictionary<string, DndClass> IndexToClasses;
 
         static DndClasses()
         {
@@ -97,24 +99,18 @@ namespace OhmsND.Core.Constants
                 .ToDictionary(x => ((DndClass) (x.GetValue(null))).IndexName, info => (DndClass) info.GetValue(null));
         }
 
-        private static readonly HashSet<string> SpecialClassesForAC = new()
+        private static readonly Dictionary<string, Func<Entities.Mongo.Attributes, int>> SpecialClassesForAC = new()
         {
-            "barbarian", "monk", "sorcerer"
+            {IndexNameBarbarian, attributes => attributes.Constitution.Modifier},
+            {IndexNameMonk, attributes => attributes.Wisdom.Modifier},
+            {IndexNameSorcerer, _ => 3}
         };
+
         public static int GetACModifier(Entities.Mongo.Attributes attributes, IEnumerable<string> classIndexNames)
         {
-            var dndClasses = classIndexNames.Select(x=> IndexToClasses[x]).Where(x=> SpecialClassesForAC.Contains(x.IndexName));
-            var sum = dndClasses.Select(x =>
-            {
-                return x.IndexName switch
-                {
-                    "barbarian" => attributes.Constitution.Modifier,
-                    "monk" => attributes.Wisdom.Modifier,
-                    "sorcerer" => 3,
-                    _ => 0
-                };
-            }).Sum();
-
+            var dndClasses = classIndexNames.Select(x => IndexToClasses[x])
+                .Where(x => SpecialClassesForAC.ContainsKey(x.IndexName));
+            var sum = dndClasses.Select(x => SpecialClassesForAC[x.IndexName](attributes)).Sum();
             return sum;
         }
     }

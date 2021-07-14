@@ -13,7 +13,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoORM4NetCore;
 using MongoORM4NetCore.Interfaces;
+using OhmsND.API.Extensions;
 using OhmsND.Core.Entities.Mongo;
+using OhmsND.Infrastructure.Extensions;
 
 namespace OhmsND.API
 {
@@ -26,12 +28,16 @@ namespace OhmsND.API
 
         public IConfiguration Configuration { get; }
 
-      
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddOhm(Configuration.GetConnectionString("Mongo"), "DnD", typeof(Character));
+            services.AddOhm(
+                Configuration.GetConnectionString("Mongo").Replace("@password", Configuration["Mongo:Password"]), "DnD",
+                typeof(Character));
+            services.AddServices();
+            services.AddMapster();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OhmsND.API", Version = "v1"});

@@ -4,4 +4,22 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\OhmsND.Core\OhmsND.Core.csproj" />
+      <ProjectReference Include="..\OhmsND.Infrastructure.Abstractions\OhmsND.Infrastructure.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MongoORM4NetCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\OhmsND.API\MongoORM4NetCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bogus" Version="33.0.2" />
+      <PackageReference Include="Mapster" Version="7.2.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+      <PackageReference Include="Scrutor" Version="3.3.0" />
+    </ItemGroup>
+
 </Project>

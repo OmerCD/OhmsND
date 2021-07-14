@@ -1,37 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static OhmsND.Infrastructure.Services.DieType;
+using OhmsND.Infrastructure.Abstractions.Dto;
+using OhmsND.Infrastructure.Abstractions.Services;
+using OhmsND.Infrastructure.Extensions;
+using static OhmsND.Infrastructure.Abstractions.Dto.DieType;
 
 namespace OhmsND.Infrastructure.Services
 {
-    public class DieService
+    public class DieService : IDieService
     {
-        public int Roll(int dieCount, DieType dieType)
+        public DieResult Roll(int dieCount, DieType dieType)
         {
             var random = new Random();
             var result = Enumerable.Range(0, dieCount).Select(x=> random.Next(1,(int)dieType + 1));
-            return result.Sum();
+            var sum = result.Sum();
+            return new DieResult()
+            {
+                Value = sum,
+                DieStatus = DieStatus.Neutral
+            };
         }
-        public IEnumerable<int> RollWithResults(int dieCount, DieType dieType)
+        public RollResult RollWithResults(int dieCount, DieType dieType)
         {
             var random = new Random();
-            var result = Enumerable.Range(0, dieCount).Select(x=> random.Next(1,(int)dieType + 1));
-            return result;
+            var result = Enumerable.Range(0, dieCount).Select(x=> random.Next(1,(int)dieType + 1)).ToArray();
+            return new RollResult()
+            {
+                DieResults = result.Select(x => new DieResult
+                {
+                    Value = x, DieStatus = x.GetDieStatus(dieType)
+                }),
+                Value = result.Sum(),
+                RollStatus = RollStatus.Neutral // TODO
+            };
         }
     }
 
-    public enum DieType
-    {
-        D2 = 2,
-        D4 = 4,
-        D6 = 6,
-        D8 = 8,
-        D100 = 100,
-        D10 = 10,
-        D12 = 12,
-        D20 = 20
-    }
 
     public static class DieFacade
     {
@@ -39,7 +44,7 @@ namespace OhmsND.Infrastructure.Services
         private static readonly DieService DieService = new DieService();
         public static int GetCharacterAttributeDieResult()
         {
-            return DieService.Roll(2, D6) + 6;
+            return DieService.Roll(2, D6).Value + 6;
         }
     }
 }
