@@ -18,6 +18,9 @@ namespace OhmsND.Core.Entities.Mongo
         public ICollection<CharacterClass> Classes { get; set; }
         [BsonIgnore] public int Initiative => Attributes.Dexterity.Modifier;
         public Gender Gender { get; set; }
+        public IEnumerable<string> Immunities { get; set; }
+        public IEnumerable<string> Resistances { get; set; }
+        public IEnumerable<string> Weaknesses { get; set; }
 
         public Attributes Attributes
         {

@@ -9,6 +9,8 @@ using MongoDB.Bson;
 using MongoORM4NetCore;
 using MongoORM4NetCore.Interfaces;
 using OhmsND.Core.Entities.Mongo;
+using OhmsND.Domain.Commands.Character;
+using OhmsND.Domain.Queries;
 using OhmsND.Domain.Queries.Classes;
 using OhmsND.Infrastructure.Abstractions.Services;
 using OhmsND.Infrastructure.Services;
@@ -31,6 +33,13 @@ namespace OhmsND.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("any/{typeName}")]
+        public async Task<IActionResult> GetAll(string typeName)
+        {
+            var query = new GetFromDndApiQuery(typeName);
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
         [HttpGet("classes")]
         public async Task<IActionResult> GetAllClasses(CancellationToken cancellationToken)
         {
@@ -38,9 +47,11 @@ namespace OhmsND.API.Controllers
             return Ok(response);
         }
         [HttpPost("random")]
-        public IActionResult CreateRandom()
+        public async Task<IActionResult> CreateRandom(CancellationToken cancellationToken)
         {
-            return Ok(_characterService.Create());
+            var command = new CreateRandomCharacterCommand();
+            var characterDto = await _mediator.Send(command, cancellationToken);
+            return Ok(characterDto);
         }
         [HttpGet("all")]
         public IActionResult GetAll()

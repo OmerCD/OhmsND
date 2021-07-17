@@ -17,7 +17,10 @@ namespace OhmsND.Infrastructure.Abstractions.Dto.Character
         public AttributesDto Attributes { get; set; }
         
         public SkillsDto Skills { get; set; }
-        
+        public IEnumerable<string> Immunities { get; set; }
+        public IEnumerable<string> Resistances { get; set; }
+        public IEnumerable<string> Weaknesses { get; set; }
+
         public int ArmorClassBase { get; set; }
         
         public int MaxHealth { get; set; }
