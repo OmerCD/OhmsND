@@ -20,7 +20,7 @@ function RollResult(props: IRollResultProps){
                     )
                 })}
             </div>
-            <div>Results :{rollResults.value}</div>
+            <div>Overall :{rollResults.value}</div>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import {useAppSelector} from "../../app/hooks";
 import {selectBaseApi} from "../../features/axios/axiosSlice";
 import DieService, {DieType, RollDiceCommandResponse} from "../../services/DieService";
 import "./DieRollPage.css"
+import RollResult from "../../components/dice-roll/RollResult";
 
 function DiceRollTestPage(){
     const [rollResult, setRollResult] = useState<RollDiceCommandResponse[]>([])
@@ -14,23 +15,7 @@ function DiceRollTestPage(){
     }
     let mapped;
     if (rollResult.length > 0){
-        mapped = rollResult.map(value => {
-            return (
-                <div>
-                    <div>
-                        {value.dieResults.map(dieResult => {
-                            return (
-                                <div>
-                                    <span>Result : {dieResult.value}</span>
-                                    <span>Status : {dieResult.dieStatus}</span>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <div>Results :{value.value}</div>
-                </div>
-            )
-        });
+        mapped = rollResult.map(value => { return <RollResult rollResults={value}/>});
     }
     return (
         <>
