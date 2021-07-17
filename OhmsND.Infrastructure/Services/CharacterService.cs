@@ -45,7 +45,7 @@ namespace OhmsND.Infrastructure.Services
                         (faker, character) => faker.Name.FirstName((Name.Gender) (int) character.Gender))
                     .RuleFor(x => x.LastName,
                         (faker, character) => faker.Name.LastName((Name.Gender) (int) character.Gender))
-                    .RuleFor(x => x.Classes, (faker, character) => faker.Random
+                    .RuleFor(x => x.Classes, (faker) => faker.Random
                         .ListItems(DndClasses.IndexToClasses.Values.ToList())
                         .Select(x => new CharacterClass() {IndexName = x.IndexName, Level = faker.Random.Number(1, 7)})
                         .ToList())
@@ -74,7 +74,7 @@ namespace OhmsND.Infrastructure.Services
             return _mapper.Map<CharacterDto>(generated);
         }
 
-        private Attributes GenerateRandomAttributes()
+        private static Attributes GenerateRandomAttributes()
         {
             var attributes = new Attributes()
             {

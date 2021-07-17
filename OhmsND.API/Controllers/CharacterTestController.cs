@@ -18,7 +18,7 @@ using OhmsND.Infrastructure.Services;
 namespace OhmsND.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CharacterTestController : ControllerBase
     {
         private readonly ILogger<CharacterTestController> _logger;

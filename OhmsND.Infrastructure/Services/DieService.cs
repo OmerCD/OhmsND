@@ -10,6 +10,7 @@ namespace OhmsND.Infrastructure.Services
 {
     public class DieService : IDieService
     {
+        private static readonly Random Random = new Random();
         public DieResult Roll(int dieCount, DieType dieType)
         {
             var random = new Random();
@@ -23,8 +24,7 @@ namespace OhmsND.Infrastructure.Services
         }
         public RollResult RollWithResults(int dieCount, DieType dieType)
         {
-            var random = new Random();
-            var result = Enumerable.Range(0, dieCount).Select(x=> random.Next(1,(int)dieType + 1)).ToArray();
+            var result = Enumerable.Range(0, dieCount).Select(x=> Random.Next(1,(int)dieType + 1)).ToArray();
             return new RollResult()
             {
                 DieResults = result.Select(x => new DieResult
