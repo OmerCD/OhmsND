@@ -9,4 +9,14 @@
       <Folder Include="Queries\Character" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Mapster" Version="7.2.0" />
+      <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OhmsND.Infrastructure.Abstractions\OhmsND.Infrastructure.Abstractions.csproj" />
+    </ItemGroup>
+
 </Project>

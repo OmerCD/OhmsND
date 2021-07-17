@@ -38,6 +38,9 @@ namespace OhmsND.API
                 typeof(Character));
             services.AddServices();
             services.AddMapster();
+            services.AddMediatRWithPipeline();
+            services.AddDnd5eApi();
+            services.AddMemoryCache();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OhmsND.API", Version = "v1"});

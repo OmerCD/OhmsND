@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoORM4NetCore;
 using MongoORM4NetCore.Interfaces;
 using OhmsND.Core.Entities.Mongo;
+using OhmsND.Domain.Queries.Classes;
 using OhmsND.Infrastructure.Abstractions.Services;
 using OhmsND.Infrastructure.Services;
 
@@ -19,13 +22,21 @@ namespace OhmsND.API.Controllers
         private readonly ILogger<CharacterTestController> _logger;
         private readonly IRepository<Character> _repository;
         private readonly ICharacterService _characterService;
-        public CharacterTestController(ILogger<CharacterTestController> logger, IRepository<Character> repository, ICharacterService characterService)
+        private readonly IMediator _mediator;
+        public CharacterTestController(ILogger<CharacterTestController> logger, IRepository<Character> repository, ICharacterService characterService, IMediator mediator)
         {
             _logger = logger;
             _repository = repository;
             _characterService = characterService;
+            _mediator = mediator;
         }
 
+        [HttpGet("classes")]
+        public async Task<IActionResult> GetAllClasses(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllClassesQuery(), cancellationToken);
+            return Ok(response);
+        }
         [HttpPost("random")]
         public IActionResult CreateRandom()
         {
