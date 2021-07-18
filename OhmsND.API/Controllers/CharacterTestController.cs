@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -47,6 +48,7 @@ namespace OhmsND.API.Controllers
             return Ok(response);
         }
         [HttpPost("random")]
+        [Authorize]
         public async Task<IActionResult> CreateRandom(CancellationToken cancellationToken)
         {
             var command = new CreateRandomCharacterCommand();

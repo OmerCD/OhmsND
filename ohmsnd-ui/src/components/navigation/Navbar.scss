@@ -10,8 +10,8 @@
   &_header{
     font-size: 22pt;
     min-width: max-content;
-    background: rgb(18,18,18);
-    background: radial-gradient(circle, rgba(18,18,18,1) 0%, rgba(0,0,0,0) 100%);
+    background: $header-color;
+    background: radial-gradient(circle, $header-color 0%, rgba(0,0,0,0) 100%);
     padding: 4px 16px;
     color: white;
     text-underline: none;

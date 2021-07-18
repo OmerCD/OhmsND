@@ -41,6 +41,7 @@ namespace OhmsND.API
             services.AddMediatRWithPipeline();
             services.AddDnd5eApi();
             services.AddMemoryCache();
+            services.AddIdentityServerAuthentication();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OhmsND.API", Version = "v1"});
@@ -61,6 +62,7 @@ namespace OhmsND.API
 
             app.UseRouting();
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
