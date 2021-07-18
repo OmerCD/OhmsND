@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {useAppSelector} from "../../app/hooks";
-import {selectBaseApi} from "../../features/axios/axiosSlice";
 import CharacterService from "../../services/CharacterService";
 import {CharacterInfoModel} from "../../models/CharacterInfoModel";
+import {useBaseAxiosApi} from "../../context/axios-context";
 
 function CharacterInfoPage(){
     const [characterInfo, setCharacterInfo] = useState<CharacterInfoModel | null>(null);
-    const baseApi = useAppSelector(selectBaseApi);
+    const baseApi = useBaseAxiosApi();
     const characterService = new CharacterService(baseApi);
     useEffect(()=>{
         characterService.generateRandomCharacter().then(response => {
             setCharacterInfo(response);
-        })
+        }).catch( _ => setCharacterInfo(null))
     },[])
     if(characterInfo === null){
         return (

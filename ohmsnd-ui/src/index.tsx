@@ -3,17 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './_colors.css';
 import App from './App';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
+import {store} from './app/store';
+import {Provider} from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import {BaseApiProvider} from "./context/axios-context";
+import {ServicesProvider} from "./context/services-context";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Provider store={store}>
+            <BaseApiProvider>
+                <ServicesProvider>
+                    <App/>
+                </ServicesProvider>
+            </BaseApiProvider>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

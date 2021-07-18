@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {useAppSelector} from "../../app/hooks";
-import {selectBaseApi} from "../../features/axios/axiosSlice";
+import React, {useState} from "react";
 import DieService, {DieType, RollDiceCommandResponse} from "../../services/DieService";
 import "./DieRollPage.css"
 import RollResult from "../../components/dice-roll/RollResult";
+import {useBaseAxiosApi} from "../../context/axios-context";
 
 function DiceRollTestPage(){
     const [rollResult, setRollResult] = useState<RollDiceCommandResponse[]>([])
-    const baseApi = useAppSelector(selectBaseApi);
+    const baseApi = useBaseAxiosApi();
     const dieService = new DieService(baseApi);
     const roll = async () => {
         const result = await dieService.rollDice({dice:[{count:5, dieType:DieType.D20}]});

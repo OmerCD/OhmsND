@@ -3,7 +3,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using OhmsND.Domain.Beahaviours;
+using OhmsND.Domain.Behaviours;
 using OhmsND.Domain.Queries.Classes;
 using OhmsND.Infrastructure.Mappings;
 

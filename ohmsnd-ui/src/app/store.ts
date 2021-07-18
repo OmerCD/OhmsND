@@ -1,13 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
-import axiosReducer from '../features/axios/axiosSlice';
-import authenticationServiceReducer from '../features/authentication/authenticationSlice'
+import userInfoReducer from '../features/userInfoSlice'
+import counterReducer from '../features/counter/counterSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    axios: axiosReducer,
-    authenticationService: authenticationServiceReducer
+    // axios: axiosReducer,
+    // authenticationService: authenticationServiceReducer
+    userInfo: userInfoReducer,
   },
 });
 

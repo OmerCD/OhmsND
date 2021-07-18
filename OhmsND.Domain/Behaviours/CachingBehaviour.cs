@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using OhmsND.Infrastructure.Abstractions.Caching;
 
-namespace OhmsND.Domain.Beahaviours
+namespace OhmsND.Domain.Behaviours
 {
     public class CachingBehaviour<TRequest, TResponse>: IPipelineBehavior<TRequest, TResponse> where TRequest : ICacheable
     {

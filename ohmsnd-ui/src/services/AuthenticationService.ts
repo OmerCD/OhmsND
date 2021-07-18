@@ -6,15 +6,15 @@ interface IUserInfo{
     token:string;
     expiryDate?:Date;
 }
-interface ISetToken{
-    (token: string): void
+interface ILoginResponse{
+    isSuccessful:boolean;
+    username:string;
+    token:string;
 }
 class AuthenticationService{
-    private readonly _setAxiosToken: ISetToken;
     private _baseApiAxios: AxiosInstance;
-    private readonly _identityApiAxios: AxiosInstance;
-    constructor(setAxiosToken:ISetToken, baseApiAxios: AxiosInstance, identityApiAxios: AxiosInstance) {
-        this._setAxiosToken = setAxiosToken;
+    private readonly _identityApiAxios?: AxiosInstance;
+    constructor(baseApiAxios: AxiosInstance, identityApiAxios?: AxiosInstance) {
         this._baseApiAxios = baseApiAxios;
         this._identityApiAxios = identityApiAxios;
     }
@@ -23,12 +23,11 @@ class AuthenticationService{
             token: token
         }
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        this._setAxiosToken(token);
     }
     setBaseApi(baseApi: AxiosInstance){
         this._baseApiAxios = baseApi;
     }
-    async login(username:string, password:string): Promise<boolean>{
+    async login(username:string, password:string): Promise<ILoginResponse>{
         const requestData = {
             client_id: "ohmsndui.client",
             client_secret: "10d570c5-64a6-4656-94da-cf6506e51106",
@@ -37,9 +36,17 @@ class AuthenticationService{
             password: password,
             scope: 'ohmsndscope'
         };
+        if (!this._identityApiAxios){
+            return {isSuccessful:false, username:'', token:''};
+        }
+        // @ts-ignore
         const response = await this._identityApiAxios.post('/connect/token', qs.stringify(requestData));
         this.setToken(response.data.access_token);
-        return response.status === 200;
+        return {
+            isSuccessful:response.status === 200,
+            username:username,
+            token:response.data.access_token
+        };
     }
     isAuthenticated() : boolean{
         return localStorage.getItem("userInfo") != null;
@@ -48,7 +55,8 @@ class AuthenticationService{
         return JSON.parse(localStorage.getItem("userInfo") as string);
     }
     logout(){
-
+        console.log("Logout")
+        localStorage.removeItem("userInfo");
     }
 }
 

@@ -1,24 +1,20 @@
 import React, {useState} from 'react';
-import {Counter} from './features/counter/Counter';
 import './App.css';
 import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import CharacterInfoPage from "./pages/CharacterInfo/CharacterInfoPage";
 import Navbar from "./components/navigation/Navbar";
 import DiceRollTestPage from "./pages/DiceRoll/DiceRollTestPage";
-import {selectAuthenticationService, setAuthenticationBaseApi} from "./features/authentication/authenticationSlice";
-import {useAppDispatch, useAppSelector} from "./app/hooks";
 import AuthenticationPage from "./pages/Authentication/AuthenticationPage";
-import {selectBaseApi, setToken} from "./features/axios/axiosSlice";
+import {useBaseAxiosApi} from "./context/axios-context";
+import {useServicesProvider} from "./context/services-context";
 
 function App() {
-    const authService = useAppSelector(selectAuthenticationService);
-    const baseApi = useAppSelector(selectBaseApi);
+    const authService = useServicesProvider().authenticationService;
+    const baseApi = useBaseAxiosApi();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(authService.isAuthenticated());
-    const dispatch = useAppDispatch();
     if(!isAuthenticated)
         return (<AuthenticationPage setLoginSuccess={setIsAuthenticated}/>)
-    dispatch(setToken(authService.getUserInfo().token));
-    dispatch(setAuthenticationBaseApi(baseApi))
+    baseApi.defaults.headers["Authorization"] = `Bearer ${authService.getUserInfo().token}`;
     return (
         <Router>
             <div>
