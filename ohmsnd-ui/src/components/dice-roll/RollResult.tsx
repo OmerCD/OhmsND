@@ -2,25 +2,33 @@ import React from "react";
 import {RollDiceCommandResponse} from "../../services/DieService";
 import './RollResult.css';
 
-interface IRollResultProps{
+interface IRollResultProps {
     rollResults: RollDiceCommandResponse
 }
 
-function RollResult(props: IRollResultProps){
+enum Status {
+    Fail, Normal, Success
+}
+
+const statusColorClasses = ['fail', 'normal', 'success'];
+
+function RollResult(props: IRollResultProps) {
     const rollResults = props.rollResults;
-    return  (
+    return (
         <div>
-            <div>
-                {rollResults.dieResults.map(dieResult => {
+            <div className='die-results-container'>
+                {rollResults.dieResults.map((dieResult, index) => {
+
                     return (
-                        <div>
-                            <span>Result : {dieResult.value}</span>
-                            <span>Status : {dieResult.dieStatus}</span>
+                        <div className='die-results-container_single' key={index}>
+                            <span>{dieResult.value}</span>
+                            <span
+                                className={statusColorClasses[dieResult.dieStatus]}>{Status[dieResult.dieStatus]}</span>
                         </div>
                     )
                 })}
             </div>
-            <div>Overall :{rollResults.value}</div>
+            <div className='die-result-overall'>Overall :{rollResults.value}</div>
         </div>
     )
 }

@@ -1,8 +1,12 @@
+@import '../../_colors.scss';
+
 .roll-button{
   cursor: pointer;
   border:1px solid white;
   padding: 8px;
   width: fit-content;
+  background: $primary-button-color;
+  color: white;
   &:hover{
     background: rgba(0,0,0,.3);
   }

@@ -1,0 +1,22 @@
+.die-results-container {
+  padding: 4px;
+  font-size: 18pt; }
+  .die-results-container_single {
+    display: flex;
+    padding: 2px; }
+    .die-results-container_single span {
+      flex: 5%;
+      flex-grow: 0;
+      text-align: center;
+      padding: 6px;
+      min-width: 80px; }
+    .die-results-container_single .fail {
+      background: #742c2c; }
+    .die-results-container_single .normal {
+      background: #3451af; }
+    .die-results-container_single .success {
+      background: green; }
+
+.die-result-overall {
+  font-size: 26pt;
+  margin-top: 6px; }

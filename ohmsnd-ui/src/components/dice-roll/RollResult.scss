@@ -1,0 +1,30 @@
+@import "../../_colors.scss";
+
+.die-results-container {
+  padding: 4px;
+  font-size: 18pt;
+  &_single {
+    display: flex;
+    padding: 2px;
+    & span {
+      flex: 5%;
+      flex-grow: 0;
+      text-align: center;
+      padding: 6px;
+      min-width: 80px;
+    }
+    & .fail{
+      background: $fail-color;
+    }
+    & .normal{
+      background: $normal-color;
+    }
+    & .success{
+      background: $success-color;
+    }
+  }
+}
+.die-result-overall{
+  font-size: 26pt;
+  margin-top: 6px;
+}
