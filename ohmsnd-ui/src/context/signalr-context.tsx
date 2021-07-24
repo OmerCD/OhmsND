@@ -21,8 +21,9 @@ const dieHubDefault = {
 export const HubConnectionsContext: Context<ISignalRServices> = createContext(dieHubDefault)
 
 export const HubConnectionsProvider = ({children}: any) => {
-    if (dieHubDefault.dieHub.state === 'Disconnected')
-        dieHubDefault.dieHub.start().then(r => console.log(r));
+    if (dieHubDefault.dieHub.state === 'Disconnected') {
+        dieHubDefault.dieHub.start();
+    }
     return (
         <HubConnectionsContext.Provider value={dieHubDefault}>
             {children}

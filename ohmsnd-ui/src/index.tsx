@@ -19,11 +19,11 @@ ReactDOM.render(
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <BaseApiProvider>
-                    {/*<HubConnectionsProvider>*/}
+                    <HubConnectionsProvider>
                         <ServicesProvider>
                             <App/>
                         </ServicesProvider>
-                    {/*</HubConnectionsProvider>*/}
+                    </HubConnectionsProvider>
                 </BaseApiProvider>
             </PersistGate>
         </Provider>

@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OhmsND.API.Extensions;
 using OhmsND.Domain.Commands.DieRoll;
 using OhmsND.Models.Request.Die;
 
@@ -23,9 +26,12 @@ namespace OhmsND.API.Controllers
         }
 
         [HttpPost("roll")]
+        [Authorize]
         public async Task<IActionResult> Roll(DieRollRequestModel model, CancellationToken cancellationToken)
         {
-            var rollCommand = new RollDiceCommand(_mapper.Map<IEnumerable<RollDiceItem>>(model.Dice));
+            
+            var rollCommand = new RollDiceCommand(_mapper.Map<IEnumerable<RollDiceItem>>(model.Dice), new RollDiceUser(
+                User.GetUserName(), User.GetId()));
             var result = await _mediator.Send(rollCommand, cancellationToken);
             return Ok(result);
         }

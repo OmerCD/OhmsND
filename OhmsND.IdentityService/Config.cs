@@ -13,7 +13,10 @@ namespace OhmsND.IdentityService
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResource(
+                    name: "profile",
+                    userClaims: new[] {"name", "email"},
+                    displayName: "Profile Data")
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -21,22 +24,22 @@ namespace OhmsND.IdentityService
             {
                 new ApiScope("scope1"),
                 new ApiScope("scope2"),
-                new ApiScope("ohmsndscope")
+                new ApiScope("ohmsndscope", "OhmsND Scope", new []{"name", "email"})
             };
 
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                new ()
+                new()
                 {
                     ClientId = "ohmsndui.client",
                     ClientName = "OhmsND UI User",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {
-                        new ("10d570c5-64a6-4656-94da-cf6506e51106".Sha256())
+                        new("10d570c5-64a6-4656-94da-cf6506e51106".Sha256())
                     },
-                    AllowedScopes = {"ohmsndscope"}
+                    AllowedScopes = {"ohmsndscope", "profile"}
                 },
                 // m2m client credentials flow client
                 new Client

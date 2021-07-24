@@ -4,12 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using OhmsND.Infrastructure.Abstractions.Dto;
 using OhmsND.Infrastructure.Abstractions.Services;
+using OhmsND.Infrastructure.Models.Hub;
+using OhmsND.SignalRHubs;
 
 namespace OhmsND.Domain.Commands.DieRoll
 {
-    public record RollDiceCommand(IEnumerable<RollDiceItem> Dice) : IRequest<IEnumerable<RollDiceCommandResponse>>
+    public record RollDiceCommand(IEnumerable<RollDiceItem> Dice, RollDiceUser User) : IRequest<IEnumerable<RollDiceCommandResponse>>
     {
     }
 
@@ -17,11 +20,14 @@ namespace OhmsND.Domain.Commands.DieRoll
     {
     }
 
+    public record RollDiceUser(string UserName, string UserId);
+
     public record RollDiceCommandResponse
     {
         public IEnumerable<RollDiceCommandResponseResult> DieResults { get; set; }
         public int Value { get; set; }
         public RollStatus RollStatus { get; set; }
+        public DieType DieType { get; set; }
     }
 
     public enum RollStatus
@@ -48,20 +54,28 @@ namespace OhmsND.Domain.Commands.DieRoll
     {
         private readonly IDieService _dieService;
         private readonly IMapper _mapper;
+        private readonly IHubContext<DieRollHub,IDieRollClient> _dieRollHub;
 
-        public RollDiceCommandHandler(IDieService dieService, IMapper mapper)
+        public RollDiceCommandHandler(IDieService dieService, IMapper mapper, IHubContext<DieRollHub, IDieRollClient> dieRollHub)
         {
             _dieService = dieService;
             _mapper = mapper;
+            _dieRollHub = dieRollHub;
         }
 
         public async Task<IEnumerable<RollDiceCommandResponse>> Handle(RollDiceCommand request,
             CancellationToken cancellationToken)
         {
-            var rollResults = request.Dice.Select(x =>
+            var (rollDiceItems, rollDiceUser) = request;
+            var rollResults = rollDiceItems.Select(x =>
                 Task.Run(() => _dieService.RollWithResults(x.Count, (DieType) x.DieType), cancellationToken)).ToArray();
             await Task.WhenAll(rollResults);
             var results = rollResults.Select(x => x.Result);
+            _dieRollHub.Clients.All.DieRolled(new DieResults()
+            {
+                Results = _mapper.Map<IEnumerable<DieResult>>(results),
+                User = _mapper.Map<DieResultUser>(rollDiceUser)
+            });
             return _mapper.Map<IEnumerable<RollDiceCommandResponse>>(results);
         }
     }

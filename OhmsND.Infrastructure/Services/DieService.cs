@@ -29,7 +29,7 @@ namespace OhmsND.Infrastructure.Services
             {
                 DieResults = result.Select(x => new DieResult
                 {
-                    Value = x, DieStatus = x.GetDieStatus(dieType)
+                    Value = x, DieStatus = x.GetDieStatus(dieType), DieType = dieType
                 }),
                 Value = result.Sum(),
                 RollStatus = RollStatus.Neutral // TODO

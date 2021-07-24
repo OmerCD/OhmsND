@@ -16,6 +16,7 @@ using MongoORM4NetCore.Interfaces;
 using OhmsND.API.Extensions;
 using OhmsND.Core.Entities.Mongo;
 using OhmsND.Infrastructure.Extensions;
+using OhmsND.SignalRHubs;
 
 namespace OhmsND.API
 {
@@ -42,6 +43,7 @@ namespace OhmsND.API
             services.AddDnd5eApi();
             services.AddMemoryCache();
             services.AddIdentityServerAuthentication();
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OhmsND.API", Version = "v1"});
@@ -61,11 +63,15 @@ namespace OhmsND.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials());
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<DieRollHub>("/hubs/dieroll");
+            });
         }
     }
 }

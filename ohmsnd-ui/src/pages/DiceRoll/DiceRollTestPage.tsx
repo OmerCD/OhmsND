@@ -3,6 +3,7 @@ import DieService, {DieType, RollDiceCommandResponse} from "../../services/DieSe
 import "./DieRollPage.css"
 import RollResult from "../../components/dice-roll/RollResult";
 import {useBaseAxiosApi} from "../../context/axios-context";
+import {useHubConnections} from "../../context/signalr-context";
 
 interface IDieRollInputs {
     dieCount: number;

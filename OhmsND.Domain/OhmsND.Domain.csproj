@@ -17,6 +17,7 @@
     <ItemGroup>
       <ProjectReference Include="..\OhmsND.Core\OhmsND.Core.csproj" />
       <ProjectReference Include="..\OhmsND.Infrastructure.Abstractions\OhmsND.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\OhmsND.SignalRHubs\OhmsND.SignalRHubs.csproj" />
     </ItemGroup>
 
 </Project>

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OhmsND.Models", "OhmsND.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OhmsND.IdentityService", "OhmsND.IdentityService\OhmsND.IdentityService.csproj", "{4FE58CE1-4666-42F7-BA78-9C1F3735841D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OhmsND.SignalRHubs", "OhmsND.SignalRHubs\OhmsND.SignalRHubs.csproj", "{B19D5C4C-3138-4337-99DA-56C7E3937E12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{4FE58CE1-4666-42F7-BA78-9C1F3735841D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE58CE1-4666-42F7-BA78-9C1F3735841D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE58CE1-4666-42F7-BA78-9C1F3735841D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19D5C4C-3138-4337-99DA-56C7E3937E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19D5C4C-3138-4337-99DA-56C7E3937E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19D5C4C-3138-4337-99DA-56C7E3937E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19D5C4C-3138-4337-99DA-56C7E3937E12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
