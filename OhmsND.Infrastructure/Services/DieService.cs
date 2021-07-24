@@ -32,7 +32,8 @@ namespace OhmsND.Infrastructure.Services
                     Value = x, DieStatus = x.GetDieStatus(dieType), DieType = dieType
                 }),
                 Value = result.Sum(),
-                RollStatus = RollStatus.Neutral // TODO
+                RollStatus = RollStatus.Neutral, // TODO
+                DieType = dieType
             };
         }
     }

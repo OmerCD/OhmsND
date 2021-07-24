@@ -11,11 +11,11 @@ export enum DieType
     D12 = 12,
     D20 = 20
 }
-interface IDieRoll {
+export interface IDieRoll {
     count:number;
     dieType:DieType;
 }
-interface IRollDiceConfig {
+export interface IRollDiceConfig {
     dice:IDieRoll[]
 }
 
@@ -45,6 +45,7 @@ export enum RollStatus {
 export interface RollDiceCommandResponseResult {
     value: number;
     dieStatus: DieStatus;
+    dieType:DieType
 }
 
 export enum DieStatus {

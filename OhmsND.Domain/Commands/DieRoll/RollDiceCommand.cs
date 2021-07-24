@@ -41,6 +41,7 @@ namespace OhmsND.Domain.Commands.DieRoll
     {
         public int Value { get; set; }
         public DieStatus DieStatus { get; set; }
+        public DieType DieType { get; set; }
     }
 
     public enum DieStatus
