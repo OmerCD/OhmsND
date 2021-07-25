@@ -1,6 +1,7 @@
 import {configureStore, ThunkAction, Action, combineReducers} from '@reduxjs/toolkit';
 import userInfoReducer from '../features/userInfoSlice'
 import counterReducer from '../features/counter/counterSlice'
+import throwsReducer from '../features/throwsSlice';
 import {FLUSH,  REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer, persistStore} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -9,6 +10,7 @@ const reducers = combineReducers({
   // axios: axiosReducer,
   // authenticationService: authenticationServiceReducer
   userInfo: userInfoReducer,
+    throws: throwsReducer
 })
 
 const persistConfig = {key:'root', storage};

@@ -2,14 +2,14 @@ import React, {FormEvent, forwardRef, Ref, useEffect, useImperativeHandle, useRe
 import {DiceD10, DiceD12, DiceD20, DiceD4, DiceD6, DiceD8, DiceManager, DiceObject} from 'threejs-dice'
 import THREE, {OrbitControls} from './three';
 import * as CANNON from 'cannon'
-import DieService, {DieType, RollDiceCommandResponse} from "../../services/DieService";
-import {useBaseAxiosApi} from "../../context/axios-context";
-import RollResult from "../../components/dice-roll/RollResult";
-
+import {DieType} from "../../services/DieService";
+import './DiceRoller.css'
 // @ts-ignore
 let container: HTMLDivElement, scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer,
     controls: any,
-    world: CANNON.World, dieList: DiceObject[] = [];
+    world: CANNON.World, dieList: DiceObject[] = [], ambient: THREE.AmbientLight, light: THREE.SpotLight,
+    barrierBody1: CANNON.Body, barrierBody2: CANNON.Body, barrierBody3: CANNON.Body, barrierBody4: CANNON.Body,
+    floorBody: CANNON.Body, w: number, h: number, frameId: number, animationStarted: boolean;
 
 interface IDieRollInputs {
     dieCount: number;
@@ -24,12 +24,12 @@ export interface IDiceThrowOptions {
 interface IDiceRollerPropType {
 }
 
-export interface DiceRollerRefType{
-    rollDice: (options:IDiceThrowOptions[]) => void
+export interface DiceRollerRefType {
+    rollDice: (options: IDiceThrowOptions[]) => void
 }
 
 
-const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRefType>) => {
+const DiceRoller = forwardRef((props: IDiceRollerPropType, ref: Ref<DiceRollerRefType>) => {
     const containerRef = useRef<HTMLDivElement>(null)
     let throwDice: (options: IDiceThrowOptions[]) => void;
     useImperativeHandle(ref, () => ({
@@ -42,25 +42,24 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
 
 
     useEffect(() => {
-        throwDice = init();
+        setup();
+        throwDice = init;
     }, []);
     return (
         <>
-            <div ref={containerRef}
-                 style={{position: 'absolute', left: '0px', top: '0px', width: '100vw', height: '100vh'}}></div>
+            <div ref={containerRef} className='dice-table'
+                 ></div>
         </>
     );
 
-    function init() {
+    function setup() {
+        animationStarted = false;
         container = containerRef.current as HTMLDivElement;
         const cw = container.clientWidth / 2;
         const ch = container.clientHeight / 2;
 
-        // SCENE
-        scene = new THREE.Scene();
-        // CAMERA
-        var w = cw,
-            h = ch;
+        w = cw;
+        h = ch;
         var VIEW_ANGLE = 45,
             ASPECT = w / h,
             NEAR = 0.01,
@@ -68,9 +67,7 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
         const wh = ch / ASPECT / Math.tan(10 * Math.PI / 180);
 
         camera = new THREE.PerspectiveCamera(20, cw / ch, 1, wh * 1.3);
-        scene.add(camera);
 
-        // camera.position.set(0, 0, wh);
         camera.position.set(0, 90, wh * 0.0001);
         camera.rotation.set(0, 0, 90)
         // camera.position.z = wh;
@@ -80,26 +77,14 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
         renderer.setClearColor(0x000000, 0);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // @ts-ignore
-        container.appendChild(renderer.domElement);
-        // EVENTS
-        // CONTROLS
         // @ts-ignore
         controls = new OrbitControls(camera, renderer.domElement);
         controls.enabled = false;
 
 
-        let ambient = new THREE.AmbientLight("0xf0f5fb");
-        scene.add(ambient);
-
-        // let directionalLight = new THREE.DirectionalLight("#ffffff", 0.5);
-        // directionalLight.position.x = -1000;
-        // directionalLight.position.y = 1000;
-        // directionalLight.position.z = 1000;
-        // scene.add(directionalLight);
+        ambient = new THREE.AmbientLight("0xf0f5fb");
         var mw = Math.max(w, h);
-        let light = new THREE.SpotLight(0xefdfd5, 2.0);
+        light = new THREE.SpotLight(0xefdfd5, 2.0);
         light.position.set(-mw / 2, mw / 2, mw * 2);
         light.target.position.set(0, 0, 0);
         light.distance = mw * 5;
@@ -111,18 +96,9 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
         // light.shadowDarkness
         light.shadow.mapSize.width = 1024;
         light.shadow.mapSize.height = 1024;
-        scene.add(light);
-        scene.fog = new THREE.FogExp2(0x9999ff, 0.00025);
-        world = new CANNON.World();
 
-        world.gravity.set(0, -9.82 * 10, 0);
-        world.broadphase = new CANNON.NaiveBroadphase();
-        world.solver.iterations = 16;
 
-        DiceManager.setWorld(world);
-
-        //Floor
-        let floorBody = new CANNON.Body({
+        floorBody = new CANNON.Body({
             mass: 0,
             shape: new CANNON.Plane(),
             material: DiceManager.floorBodyMaterial
@@ -131,55 +107,63 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
             new CANNON.Vec3(1, 0, 0),
             -Math.PI / 2
         );
-        const barrierBody1 = new CANNON.Body({
+        barrierBody1 = new CANNON.Body({
             mass: 0,
             shape: new CANNON.Plane(),
             material: DiceManager.barrierBodyMaterial
         })
-        const barrierBody2 = new CANNON.Body({
+        barrierBody2 = new CANNON.Body({
             mass: 0,
             shape: new CANNON.Plane(),
             material: DiceManager.barrierBodyMaterial
         })
-        const barrierBody3 = new CANNON.Body({
+        barrierBody3 = new CANNON.Body({
             mass: 0,
             shape: new CANNON.Plane(),
             material: DiceManager.barrierBodyMaterial
         })
-        const barrierBody4 = new CANNON.Body({
+        barrierBody4 = new CANNON.Body({
             mass: 0,
             shape: new CANNON.Plane(),
             material: DiceManager.barrierBodyMaterial,
         })
+        const barrierModifier = 0.023;
         barrierBody1.quaternion.setFromEuler(0, Math.PI, 0);
         barrierBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI / 2)
         barrierBody3.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI / 2)
         barrierBody4.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI / 2)
-        barrierBody1.position.set(0, 0, h * 0.025)
-        barrierBody2.position.set(0, 0, -h * 0.025)
-        barrierBody3.position.set(w * .025, 0, 0)
-        barrierBody4.position.set(-w * 0.025, 0, 0)
-        // @ts-ignore
+        barrierBody1.position.set(0, 0, h * barrierModifier)
+        barrierBody2.position.set(0, 0, -h * barrierModifier)
+        barrierBody3.position.set(w * barrierModifier, 0, 0)
+        barrierBody4.position.set(-w * barrierModifier, 0, 0)
+
+    }
+
+    function init(dice: IDiceThrowOptions[]) {
+        container.innerHTML = '';
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x9999ff, 0.00025);
+        world = new CANNON.World();
+        world.gravity.set(0, -9.82 * 10, 0);
+        world.broadphase = new CANNON.NaiveBroadphase();
+        world.solver.iterations = 16;
+        scene.add(camera);
+        DiceManager.setWorld(world);
+
         world.addBody(floorBody);
-        // @ts-ignore
         world.addBody(barrierBody1);
-        // @ts-ignore
         world.addBody(barrierBody2);
-        // @ts-ignore
         world.addBody(barrierBody3);
-        // @ts-ignore
         world.addBody(barrierBody4);
 
-        //Walls
+        container.appendChild(renderer.domElement);
+        scene.add(ambient);
+        scene.add(light);
 
-        var colors = ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff'];
 
         function randomDiceThrow(dice: IDiceThrowOptions[]) {
-            for (let diceIndex in dieList) {
-                scene.remove(dieList[diceIndex].getObject());
-            }
-            dieList = [];
-            const diceOptions = {size: 1.5, backColor: 'hotpink', fontColor: 'whitesmoke'};
+            clearDice();
+            const diceOptions = {size: 1.5, backColor: '#424242', fontColor: 'whitesmoke'};
             for (var i = 0; i < dice.length; i++) {
                 let die: DiceObject;
                 switch (dice[i].type) {
@@ -212,15 +196,13 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
             const xAxisModifier = (Math.round(Math.random()) * 2 - 1);
             const yAxisModifier = (Math.round(Math.random()) * 2 - 1);
             for (var i = 0; i < dice.length; i++) {
-
-                let yRand = Math.random() * 10
-                dieList[i].getObject().position.x = w * .023 * xAxisModifier;
+                dieList[i].getObject().position.x = w * .015 * xAxisModifier;
                 dieList[i].getObject().position.y = 2 + Math.floor(i / 3) * 1.5;
-                dieList[i].getObject().position.z = h * .023 * yAxisModifier;
+                dieList[i].getObject().position.z = h * .015 * yAxisModifier;
                 dieList[i].getObject().quaternion.x = (Math.random() * 90 - 45) * Math.PI / 180;
                 dieList[i].getObject().quaternion.z = (Math.random() * 90 - 45) * Math.PI / 180;
                 dieList[i].updateBodyFromMesh();
-                let rand = Math.random() * 20;
+                let rand = Math.random() * 40;
                 dieList[i].getObject().body.velocity.set(rand, rand, rand);
                 dieList[i].getObject().body.angularVelocity.set(20 * Math.random() - 10, 20 * Math.random() - 10, 20 * Math.random() - 10);
 
@@ -230,22 +212,44 @@ const DiceRoller = forwardRef((props:IDiceRollerPropType, ref: Ref<DiceRollerRef
             DiceManager.prepareValues(diceValues);
         }
 
-        // setInterval(randomDiceThrow, 3000);
-        // randomDiceThrow();
-// @ts-ignore
-        containerRef.current.addEventListener("click", () => {
+        function clearDice() {
             for (let diceIndex in dieList) {
-                scene.remove(dieList[diceIndex].getObject());
+                const object = dieList[diceIndex].getObject()
+                if (object) {
+                    if (object.geometry)
+                        object.geometry.dispose();
+                    // @ts-ignore
+                    if (object.material && object.material.materials) {
+                        // @ts-ignore
+                        for (let index = 0; index < object.material.materials.length; index++) {
+                            // @ts-ignore
+                            object.material.materials[index].dispose()
+                            console.log("disposed material");
+                        }
+                    }
+
+                    scene.remove(object);
+                }
             }
+            renderer.renderLists.dispose();
             dieList = [];
+        }
+
+        // @ts-ignore
+        containerRef.current.addEventListener("click", () => {
+            clearDice();
         });
-        requestAnimationFrame(animate);
-        return randomDiceThrow;
+        randomDiceThrow(dice)
+        if (!animationStarted) {
+            requestAnimationFrame(animate);
+            animationStarted = true;
+        }
     }
 
     function animate() {
         updatePhysics();
         render();
+        controls.update();
         requestAnimationFrame(animate);
 
     }

@@ -1,0 +1,10 @@
+@import "../../constants";
+
+.dice-table {
+  position: absolute;
+  left: 0px;
+  top: $header-height;
+  width: 100vw;
+  height: calc(100vh - #{$header-height});
+  z-index: -15;
+}

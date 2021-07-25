@@ -27,16 +27,17 @@ namespace OhmsND.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public Character Create(Character character)
+        public CharacterDto Create(CharacterCreateDto character)
         {
-            if (_repository.Insert(character))
+            var characterEntity = _mapper.Map<Character>(character);
+            if (_repository.Insert(characterEntity))
             {
-                return character;
+                return _mapper.Map<CharacterDto>(characterEntity);
             }
 
             return null;
         }
-
+        
         public CharacterDto Create(IEnumerable<string> damageTypeIndexNames = null)
         {
             var fakerInstance = new Faker<Character>()

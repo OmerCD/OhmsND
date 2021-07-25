@@ -13,6 +13,7 @@ namespace OhmsND.Core.Entities.Mongo
         public string OwnerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string RaceName { get; set; }
         [BsonIgnore] public PassiveSkills PassiveSkills { get; private set; }
         [BsonIgnore] public int Level => Classes.Sum(x => x.Level);
         public ICollection<CharacterClass> Classes { get; set; }

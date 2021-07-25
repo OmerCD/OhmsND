@@ -8,5 +8,6 @@ namespace OhmsND.Infrastructure.Abstractions.Services
     {
         Task<ClassInfoDto> GetAllClasses(CancellationToken cancellationToken = default);
         Task<BaseDndApiResult> GetAll(string typeName, CancellationToken cancellationToken = default);
+        Task<T> GetAs<T>(string path, CancellationToken cancellationToken = default);
     }
 }

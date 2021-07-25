@@ -4,7 +4,8 @@
   padding-left: 8px;
   padding-right: 8px;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  box-sizing: border-box; }
   .main-nav_header {
     font-size: 22pt;
     min-width: max-content;

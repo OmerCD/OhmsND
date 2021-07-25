@@ -7,6 +7,10 @@ namespace OhmsND.Infrastructure.Models.Hub
     {
         public DieResultUser User { get; set; }
         public IEnumerable<DieResult> Results { get; set; }
+        public string ValuesText { get; set; }
+        public string ResultText { get; set; }
+        public string ActionType { get; set; }
+        public string ActionTypeColor { get; set; }
     }
     public class DieResultUser
     {

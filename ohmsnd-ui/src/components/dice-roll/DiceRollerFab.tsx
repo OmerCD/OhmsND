@@ -7,15 +7,7 @@ import {IDiceThrowOptions} from "./DiceRoller";
 interface IDiceRollerFabPropType{
     roll:(options: IDiceThrowOptions[]) => void
 }
-function myFunc(obj:any, index:number):string {
-    let i = 0;
 
-    for (var prop in obj) {
-        if (i === index) return prop.toUpperCase();
-        i++;
-    }
-    return '';
-}
 function DiceRollerFab(props:IDiceRollerFabPropType) {
     const [hidden, setHidden] = useState<boolean>(true);
     const [counts, setCounts] = useState({});
@@ -54,11 +46,12 @@ function DiceRollerFab(props:IDiceRollerFabPropType) {
                 type: item.dieType
             }
         })
+        console.log("Dice Options",options)
         props.roll(options);
     }
     return (
         <div>
-            <div className='roll-fab' onClick={() => setHidden(!hidden)}></div>
+            <div className={`roll-fab ${!hidden ? 'close' : ''}`} onClick={() => setHidden(!hidden)}></div>
             <div className={`roll-menu-container ${hidden ? 'hidden' : 'openning'}`}>
                 <ContainerDieFab hideCount={hidden} countChanged={handleCountChange} text='d4'></ContainerDieFab>
                 <ContainerDieFab hideCount={hidden} countChanged={handleCountChange} text='d6'></ContainerDieFab>

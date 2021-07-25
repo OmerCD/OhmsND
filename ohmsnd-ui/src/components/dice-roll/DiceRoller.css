@@ -1,0 +1,7 @@
+.dice-table {
+  position: absolute;
+  left: 0px;
+  top: 48px;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  z-index: -15; }

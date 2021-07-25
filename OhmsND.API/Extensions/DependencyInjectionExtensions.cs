@@ -1,7 +1,9 @@
 ﻿using Mapster;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OhmsND.Domain.Behaviours;
 using OhmsND.Domain.Queries.Classes;
@@ -26,13 +28,13 @@ namespace OhmsND.API.Extensions
             return services;
         }
 
-        public static IServiceCollection AddIdentityServerAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddIdentityServerAuthentication(this IServiceCollection services, IWebHostEnvironment hostEnvironment)
         {
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:3682";
-
+                    options.Authority = hostEnvironment.IsDevelopment() ? "https://localhost:3682" : "http://192.168.31.220:3682";
+                    options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false

@@ -7,6 +7,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:3682"
+    },
+    "SelfHost LAN": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "LAN"
+      },
+      "applicationUrl": "http://localhost:3682;http://192.168.31.220:3682"
     }
   }
 }

@@ -33,5 +33,13 @@ namespace OhmsND.Infrastructure.Services
             var stringContent = await response.Content.ReadAsStringAsync(cancellationToken);
             return JsonConvert.DeserializeObject<BaseDndApiResult>(stringContent);
         }
+
+        public async Task<T> GetAs<T>(string path, CancellationToken cancellationToken = default)
+        {
+            var response = await _dndClient.GetAsync(path, cancellationToken);
+            if (!response.IsSuccessStatusCode) return default;
+            var stringContent = await response.Content.ReadAsStringAsync(cancellationToken);
+            return JsonConvert.DeserializeObject<T>(stringContent);
+        }
     }
 }
