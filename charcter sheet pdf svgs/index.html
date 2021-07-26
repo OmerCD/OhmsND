@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Test Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .armor-class {
+            width: 100px;
+            height: 118px;
+            background-image: url(./pieces/armor-class-border.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .attribute {
+            width: 100px;
+            height: 118px;
+            background-image: url(./pieces/attribute-border.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+
+        }
+
+        .attribute * {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .attribute_title {
+            flex: 18%;
+            font-size: 14px;
+            font-weight: bold;
+            padding-top: 5px;
+
+        }
+
+        .attribute_bonus {
+            flex: 50%;
+            font-size: 44px;
+            border: 1px solid red;
+            border-bottom-style: none;
+            border-radius: 8px;
+            padding: 0 6px;
+            cursor: pointer;
+        }
+
+        .attribute_base {
+            flex: 32%;
+            font-size: 23px;
+        }
+
+        .inspiration {
+            display: flex;
+            background-image: url('./pieces/inspiration-bar.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            align-items: center;
+            flex-direction: row;
+            width: 300px;
+            height: 80px;
+        }
+
+        .inspiration_value {
+            flex: 25%;
+            cursor: pointer;
+        }
+
+        .inspiration_value_checked {
+            background-image: url('./pieces/check-mark.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 65%;
+            margin-bottom: 6px;
+        }
+
+        .inspiration_text {
+            flex: 75%;
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+            padding-bottom: 8px;
+        }
+
+        .proficency {
+            display: flex;
+            background-image: url('./pieces/proficency-bar.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            align-items: center;
+            flex-direction: row;
+            width: 300px;
+            height: 80px;
+        }
+
+        .proficency_value {
+            flex: 25%;
+            text-align: center;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .proficency_text {
+            flex: 75%;
+            text-indent: 30px;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .ins-spd-border {
+            background-image: url('./pieces/ins-sp-border.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 100px;
+            height: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ins-spd-border_value {
+            flex: 75%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            font-weight: bold;
+            padding-top: 10px;
+        }
+
+        .ins-spd-border_title {
+            font-weight: bold;
+            flex: 25%;
+        }
+
+        .saving-throw-container-wrapper {
+            width: fit-content;
+        }
+
+        .saving-throw-container {
+            background-image: url('./pieces/saving-throw-border.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 300px;
+            height: 100px;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .saving-throw-line {
+            display: flex;
+            justify-content: space-evenly;
+            width: 45%;
+        }
+
+
+
+        .saving-throw-line .proficiency {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .saving-throw-line .proficiency * {
+
+            width: 18px;
+            height: 18px;
+        }
+
+        .saving-throw-line .proficiency .none {
+            border: 1px solid black;
+            border-radius: 50%;
+
+        }
+
+        .saving-throw-line .proficiency .half {
+            border: 1px solid black;
+            border-radius: 50%;
+            background: linear-gradient(45deg, black 50%, white 50%);
+
+        }
+
+        .saving-throw-line .proficiency .full {
+            border: 1px solid black;
+            border-radius: 50%;
+            background-color: black;
+
+        }
+
+        .saving-throw-line .modifier {
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 5px;
+            flex: 2;
+            background: lightgray;
+            padding: 1px;
+            align-items: center;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .saving-throw-line .title {
+            font-size: 2ch;
+            font-weight: bolder;
+            flex: 8;
+            text-indent: 45%;
+        }
+    </style>
+
+    <style>
+        .skill-container-wrapper {
+            width: fit-content;
+        }
+
+        .skill-container {
+            background-image: url('./pieces/skill-border.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 250px;
+            height: 600px;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-line {
+            display: flex;
+            margin-bottom: 5px;
+        }
+
+        .skill-line .proficiency {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .skill-line .proficiency * {
+            width: 18px;
+            height: 18px;
+        }
+
+        .skill-line .proficiency .none {
+            border: 1px solid black;
+            border-radius: 50%;
+        }
+
+        .skill-line .proficiency .half {
+            border: 1px solid black;
+            border-radius: 50%;
+            background: linear-gradient(45deg, black 50%, white 50%);
+        }
+
+        .skill-line .proficiency .full {
+            border: 1px solid black;
+            border-radius: 50%;
+            background-color: black;
+        }
+
+        .skill-line .modifier {
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 5px;
+            flex: 1;
+            background: lightgray;
+            padding: 1px;
+            align-items: center;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .skill-line .title {
+            font-size: 1.5ch;
+            font-weight: bolder;
+            flex: 8;
+            text-indent: 5px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="armor-class">18</div>
+    <div class="attribute">
+
+        <div class="attribute_title">
+            Constitution
+        </div>
+        <div class="attribute_bonus">+3</div>
+        <div class="attribute_base">15</div>
+    </div>
+    <div class="attribute">
+
+        <div class="attribute_title">
+            Dexterity
+        </div>
+        <div class="attribute_bonus">+6</div>
+        <div class="attribute_base">17</div>
+    </div>
+    <div class="inspiration">
+        <div class="inspiration_value inspiration_value_checked"> </div>
+        <div class="inspiration_text">Inspiration</div>
+    </div>
+    <div class="proficency">
+        <div class="proficency_value">+3</div>
+        <div class="proficency_text">Proficency</div>
+    </div>
+    <div class="ins-spd-border">
+        <div class="ins-spd-border_value">+3</div>
+        <div class="ins-spd-border_title">Initiative</div>
+    </div>
+    <div class="ins-spd-border">
+        <div class="ins-spd-border_value">30ft</div>
+        <div class="ins-spd-border_title">Speed</div>
+    </div>
+    <div class="saving-throw-container-wrapper">
+        <div class="saving-throw-container">
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="none"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">STR</div>
+            </div>
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="half"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">DEX</div>
+            </div>
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="full"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">CON</div>
+            </div>
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+
+                <div class="modifier">+3</div>
+                <div class="title">WIS</div>
+            </div>
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">INT</div>
+            </div>
+            <div class="saving-throw-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">CHA</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: -12px;">
+            <span style="background-color: white; padding-left: 2px; padding-right: 2px;">Saving Throws</span>
+        </div>
+    </div>
+
+
+
+    <div class="skill-container-wrapper">
+        <div class="skill-container">
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="none"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">STR</div>
+            </div>
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="half"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">DEX</div>
+            </div>
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="full"></div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">CON</div>
+            </div>
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+
+                <div class="modifier">+3</div>
+                <div class="title">WIS</div>
+            </div>
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">INT</div>
+            </div>
+            <div class="skill-line">
+                <div class="proficiency">
+                    <div class="proficiency">
+                        <div class="half"></div>
+                    </div>
+                </div>
+                <div class="modifier">+3</div>
+                <div class="title">
+                    <span> Animal Handling </span>
+                    <span>(WIS)</span>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: -15px;">
+            <span style="background-color: white; padding-left: 2px; padding-right: 2px;">Skills</span>
+        </div>
+    </div>
+</body>
+
+</html>
