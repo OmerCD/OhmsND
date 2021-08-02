@@ -1,0 +1,96 @@
+  <style>
+        .title-container {
+            background-image: url(./pieces/00/title-background.svg);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            box-sizing: content-box;
+        }
+
+        .title-name-container {
+            flex: 41;
+            display: flex;
+            justify-content: center;
+            padding-top: 1%;
+            padding-left: 5%;
+            align-items: center;
+            font-size: 4ch;
+            color: black;
+            user-select: none;
+            font-weight: bolder;
+        }
+
+        .title-atr-container {
+            flex: 60;
+            margin-top: 6%;
+            margin-left: 4.5%;
+            margin-bottom: 3%;
+            margin-right: 6.5%;
+            padding-left: 10px;
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .title-atr-container div {
+            display: flex;
+            flex-direction: column;
+            flex: 30%;
+        }
+
+        .title-atr-container div label {
+            border-top: 2px solid lightgray;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .title-atr-container div input {
+            font-size: 18px;
+        }
+
+        .title-atr-container div input:disabled {
+            border: none;
+            border-bottom: 1px solid black;
+            background: transparent;
+            border: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: text !important;
+        }
+    </style>
+    <div style="width: 90vw; margin:0 auto;">
+        <div class="title-container">
+            <div class="title-name-container"> Henry The Barbarian</div>
+            <div class="title-atr-container">
+                <div>
+                    <input disabled type="text" value="Barbarian 10, Rouge 2" />
+                    <label>CLASS & LEVEL</label>
+                </div>
+                <div>
+                    <input disabled type="text" value="Acolayte" />
+                    <label>background</label>
+                </div>
+                <div>
+                    <input disabled type="text" value="OmerCD" />
+                    <label>Player Name</label>
+                </div>
+                <div>
+                    <input disabled type="text" value="Goliath" />
+                    <label>RACE</label>
+                </div>
+                <div>
+                    <input disabled type="text" value="True Natural" />
+                    <label>Aligment</label>
+                </div>
+                <div>
+                    <input disabled type="text" value="5000" />
+                    <label>EXP Points</label>
+                </div>
+            </div>
+        </div>
+    </div>
