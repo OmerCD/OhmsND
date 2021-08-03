@@ -21,7 +21,6 @@ body {
     background-image: url(./pieces/title-background.svg);
     background-repeat: no-repeat;
     background-size: contain;
-    border: 1px solid black;
     margin-bottom: 5px;
     margin-left: 15%;
 }
@@ -58,7 +57,6 @@ body {
     width: 300px;
     height: 780px;
     margin-left: 5px;
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,6 +77,9 @@ body {
 .third-bar-container .rest-container {
     width: 300px;
     height: calc(780px - 220px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .passive {
@@ -395,7 +396,6 @@ body {
 }
 
 .title-container {
-    border: 1px solid red;
     background-image: url(./pieces/title-background.svg);
     background-size: contain;
     background-repeat: no-repeat;
@@ -469,7 +469,6 @@ body {
     background-image: url("./pieces/attack-and-spellcasting-border.svg");
     background-repeat: no-repeat;
     background-size: contain;
-    border: 1px solid blue;
     width: 300px;
     height: 250px;
     padding: 15px 20px;
@@ -478,14 +477,17 @@ body {
     cursor: s-resize;
     overflow-y: hidden;
 }
-.attack-and-spellcasting-container table tbody{
+
+.attack-and-spellcasting-container table tbody {
     overflow-y: scroll;
     max-height: 190px;
     display: block;
 }
-.attack-and-spellcasting-container table tbody::-webkit-scrollbar{
+
+.attack-and-spellcasting-container table tbody::-webkit-scrollbar {
     display: none;
 }
+
 .attack-and-spellcasting-container table thead tr {
     margin: 0;
     padding: 0;
@@ -493,33 +495,40 @@ body {
     position: sticky;
     top: 0;
 }
+
 .attack-and-spellcasting-line td input {
     font-size: 18px;
     text-align: left;
     padding: 0;
 }
 
-.attack-and-spellcasting-container table thead tr th:nth-of-type(1){
+.attack-and-spellcasting-container table thead tr th:nth-of-type(1) {
     min-width: calc(300px * 0.35);
     text-align: left;
 }
-.attack-and-spellcasting-container table tbody tr td:nth-of-type(1) input{
+
+.attack-and-spellcasting-container table tbody tr td:nth-of-type(1) input {
     width: calc(300px * 0.35);
 }
-.attack-and-spellcasting-container table thead tr th:nth-of-type(2){
+
+.attack-and-spellcasting-container table thead tr th:nth-of-type(2) {
     min-width: calc(300px * 0.15);
     text-align: left;
 }
-.attack-and-spellcasting-container table tbody tr td:nth-of-type(2) input{
+
+.attack-and-spellcasting-container table tbody tr td:nth-of-type(2) input {
     width: calc(300px * 0.10);
 }
-.attack-and-spellcasting-container table thead tr th:nth-of-type(3){
+
+.attack-and-spellcasting-container table thead tr th:nth-of-type(3) {
     min-width: calc(300px * 0.35);
     text-align: left;
 }
-.attack-and-spellcasting-container table tbody tr td:nth-of-type(3) input{
+
+.attack-and-spellcasting-container table tbody tr td:nth-of-type(3) input {
     width: calc(300px * 0.35);
 }
+
 .attack-and-spellcasting-container table tbody tr {
     margin: 0;
     padding: 0;
@@ -534,4 +543,58 @@ body {
     border: none;
     background-color: lightgrey;
 
+}
+
+.money-and-equipment-container {
+    background-image: url("./pieces/attack-and-spellcasting-border.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-top: 20px;
+}
+
+.money-and-equipment-container .money-container {
+    width: 100px;
+    position: absolute;
+    left: -20px;
+    top: 20px;
+}
+
+.money-and-equipment-container .equipment-container {
+    width: 200px;
+    height: 100%;
+    margin-left: 75px;
+}
+
+.money-and-equipment-container .money-container .money-item {
+    background-image: url("./pieces/gold-border.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 80px;
+    height: 40px;
+    display: flex;
+}
+
+.money-item .gold-type {
+    flex: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    font-size: 10px;
+    font-weight: bold;
+
+}
+
+.money-item .gold-amount {
+    flex: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    font-weight: bolder;
 }
