@@ -21,6 +21,7 @@ import {
 } from "../../components/CharacterCreation/SecondColumn/SavingThrows/SavingThrow";
 import { ISkillContainerPropType } from "../../components/CharacterCreation/SecondColumn/Skills/SkillContainer";
 import { ISkillPropType } from "../../components/CharacterCreation/SecondColumn/Skills/Skill";
+import ThirdContainer from "../../components/CharacterCreation/ThirdColumn/ThirdContainer";
 function DiceRollPage() {
   const rollRef = useRef<DiceRollerRefType>(null);
   const rollDice = (options: IDiceThrowOptions[]) => {
@@ -96,50 +97,46 @@ function DiceRollPage() {
     });
     setSecondContainerProp(savingThrows);
 
+    const skills: ISkillPropType[] = [];
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.Half,
+      title: "STR",
+    });
 
-     const skills: ISkillPropType[] = [];
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.Half,
-       title: "STR",
-     });
-
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.Full,
-       title: "STR",
-     });
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.None,
-       title: "CON",
-     });
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.Half,
-       title: "CHA",
-     });
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.Half,
-       title: "INT",
-     });
-     skills.push({
-       modifier: "3",
-       proficiencyType: ProficiencyType.Half,
-       title: "DEX",
-     });
-     setSkills(skills);
-
-
-
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.Full,
+      title: "STR",
+    });
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.None,
+      title: "CON",
+    });
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.Half,
+      title: "CHA",
+    });
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.Half,
+      title: "INT",
+    });
+    skills.push({
+      modifier: "3",
+      proficiencyType: ProficiencyType.Half,
+      title: "DEX",
+    });
+    setSkills(skills);
   }, []);
 
   const [attributes, setAttributes] = useState<IAttributeProps[]>([]);
   const [secondContainerProp, setSecondContainerProp] = useState<
     ISavingThrowPropType[]
   >([]);
- const [skills, setSkills] = useState<ISkillPropType[]>([]);
+  const [skills, setSkills] = useState<ISkillPropType[]>([]);
   return (
     <>
       <div className="main-container">
@@ -159,6 +156,13 @@ function DiceRollPage() {
             PassiveInsightValue={11}
             PassiveInvestigationValue={13}
             PassivePerceptionValue={11}
+          />
+          <ThirdContainer
+            ArmorClassValue={18}
+            CurrentHp={60}
+            InitiativeValue={3}
+            MaxHp={60}
+            SpeedValue={30}
           />
         </div>
       </div>

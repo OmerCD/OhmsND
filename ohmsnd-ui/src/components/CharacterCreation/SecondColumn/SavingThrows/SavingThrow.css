@@ -1,0 +1,53 @@
+.saving-throw-container-wrapper {
+  width: fit-content; }
+  .saving-throw-container-wrapper .saving-throw-container {
+    background-image: url("../../../../pieces/saving-throw-border.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 300px;
+    height: 100px;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    color: black;
+    justify-content: space-between; }
+    .saving-throw-container-wrapper .saving-throw-container .saving-throw-line {
+      display: flex;
+      justify-content: space-evenly;
+      width: 45%;
+      margin-left: 5%; }
+      .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .skill-proficiency {
+        display: flex;
+        justify-content: center;
+        flex: 1; }
+        .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .skill-proficiency * {
+          width: 18px;
+          height: 18px; }
+        .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .skill-proficiency .None {
+          border-radius: 50%;
+          border: 1px solid black; }
+        .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .skill-proficiency .Half {
+          border: 1px solid black;
+          border-radius: 50%;
+          background: linear-gradient(45deg, black 50%, white 50%); }
+        .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .skill-proficiency .Full {
+          border: 1px solid black;
+          border-radius: 50%;
+          background-color: black; }
+      .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .modifier {
+        font-size: 16px;
+        font-weight: bold;
+        margin-left: 5px;
+        flex: 2;
+        background: lightgray;
+        padding: 1px;
+        align-items: center;
+        user-select: none;
+        cursor: pointer; }
+      .saving-throw-container-wrapper .saving-throw-container .saving-throw-line .title {
+        font-size: 2ch;
+        font-weight: bolder;
+        flex: 8;
+        margin-left: 10px; }
