@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 .main-container {
+    * {
+        z-index: 0;
+    }
+    * :not(.dice-table){
+      pointer-events: none;
+    }
     width: 90vw;
     height: auto;
     margin: 0 auto;

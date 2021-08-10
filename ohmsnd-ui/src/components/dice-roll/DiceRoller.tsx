@@ -1,4 +1,13 @@
-import React, {FormEvent, forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import React, {
+    CSSProperties,
+    FormEvent,
+    forwardRef,
+    Ref,
+    useEffect,
+    useImperativeHandle, useMemo,
+    useRef,
+    useState
+} from 'react';
 import {DiceD10, DiceD12, DiceD20, DiceD4, DiceD6, DiceD8, DiceManager, DiceObject} from 'threejs-dice'
 import THREE, {OrbitControls} from './three';
 import * as CANNON from 'cannon'
@@ -22,6 +31,8 @@ export interface IDiceThrowOptions {
 }
 
 interface IDiceRollerPropType {
+    className?: string,
+    style?: CSSProperties
 }
 
 export interface DiceRollerRefType {
@@ -32,23 +43,33 @@ export interface DiceRollerRefType {
 const DiceRoller = forwardRef((props: IDiceRollerPropType, ref: Ref<DiceRollerRefType>) => {
     const containerRef = useRef<HTMLDivElement>(null)
     let throwDice: (options: IDiceThrowOptions[]) => void;
+    const [diceIndex, setDiceIndex] = useState<number>(-15);
     useImperativeHandle(ref, () => ({
         rollDice(options: IDiceThrowOptions[]) {
             throwDice(options.map(x => {
                 return {value: x.value, type: x.type}
             }));
+            setDiceIndex(1);
+            setTimeout(() => {
+                setDiceIndex(-5);
+            }, 2000)
         }
     }))
 
 
     useEffect(() => {
         setup();
-        throwDice = init;
     }, []);
+    useMemo(() => {
+        throwDice = init
+    }, [diceIndex])
+    const style = {...props.style, '--diceIndex': diceIndex} as React.CSSProperties;
     return (
         <>
-            <div ref={containerRef} className='dice-table'
-                 ></div>
+            <div ref={containerRef}
+                 className={`dice-table ${props.className ? props.className : ''}`}
+                 style={style}
+            ></div>
         </>
     );
 
@@ -233,12 +254,21 @@ const DiceRoller = forwardRef((props: IDiceRollerPropType, ref: Ref<DiceRollerRe
             }
             renderer.renderLists.dispose();
             dieList = [];
+            setDiceIndex(-15);
         }
 
-        // @ts-ignore
-        containerRef.current.addEventListener("click", () => {
+        document.body.addEventListener("click", handleBodyClick);
+
+        function handleBodyClick() {
             clearDice();
-        });
+            document.body.removeEventListener("click", handleBodyClick);
+        }
+
+
+        // // @ts-ignore
+        // containerRef.current.addEventListener("click", () => {
+        //     clearDice();
+        // });
         randomDiceThrow(dice)
         if (!animationStarted) {
             requestAnimationFrame(animate);

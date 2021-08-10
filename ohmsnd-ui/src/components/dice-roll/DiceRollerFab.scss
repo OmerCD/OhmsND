@@ -5,6 +5,11 @@ $fab-action-button-height: calc(#{$fab-size} + 5px);
 $fab-action-button-width: 200px;
 $fab-count-size: 26px;
 $fab-color: #973c3c;
+.roll-fab-container{
+  * {
+    z-index: 1;
+  }
+}
 .roll-menu-base {
   position: absolute;
   z-index: 2;

@@ -50,7 +50,7 @@ function DiceRollerFab(props:IDiceRollerFabPropType) {
         props.roll(options);
     }
     return (
-        <div>
+        <div className={`roll-fab-container`}>
             <div className={`roll-fab ${!hidden ? 'close' : ''}`} onClick={() => setHidden(!hidden)}></div>
             <div className={`roll-menu-container ${hidden ? 'hidden' : 'openning'}`}>
                 <ContainerDieFab hideCount={hidden} countChanged={handleCountChange} text='d4'></ContainerDieFab>
