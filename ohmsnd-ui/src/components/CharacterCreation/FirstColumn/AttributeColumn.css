@@ -1,0 +1,7 @@
+.attribute-container {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-image: url(../../../pieces/attribute-bar-background.svg); }

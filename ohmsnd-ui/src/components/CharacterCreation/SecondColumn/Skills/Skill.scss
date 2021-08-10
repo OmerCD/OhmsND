@@ -1,0 +1,71 @@
+.skill-container-wrapper {
+    width: fit-content;
+
+    & .skill-container {
+        background-image: url("../../../../pieces/skill-border.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 270px;
+        height: 500px;
+        padding: 15px 20px;
+        display: flex;
+        flex-direction: column;
+        color: black;
+
+        & .skill-line {
+            display: flex;
+            margin-bottom: 5px;
+            margin-left: 2%;
+
+            & .skill-proficiency {
+                display: flex;
+                justify-content: center;
+                flex: 1;
+
+                & * {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                & .None {
+                    border: 1px solid black;
+                    border-radius: 50%;
+                }
+
+                & .Half {
+                    border: 1px solid black;
+                    border-radius: 50%;
+                    background: linear-gradient(45deg, black 50%, white 50%);
+                }
+
+                & .Full {
+                    border: 1px solid black;
+                    border-radius: 50%;
+                    background-color: black;
+                }
+
+            }
+
+            & .modifier {
+                font-size: 16px;
+                font-weight: bold;
+                margin-left: 5px;
+                flex: 1;
+                background: lightgray;
+                padding: 1px;
+                align-items: center;
+                user-select: none;
+                cursor: pointer;
+            }
+
+            & .title {
+                font-size: 1.5ch;
+                font-weight: bolder;
+                flex: 8;
+                text-indent: 5px;
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}

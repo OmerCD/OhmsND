@@ -1,0 +1,30 @@
+.passive {
+    width: 230px;
+    max-width: 230px;
+    height: 35px;
+    background-image: url(../../../../pieces/passive-border.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row;
+    color: black;
+
+    & .value {
+        flex: 15%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    & .text {
+        flex: 85%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+}

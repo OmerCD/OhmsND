@@ -1,0 +1,34 @@
+.attribute {
+  width: 100px;
+  height: 118px;
+  background-image: url(../../../../pieces/attribute-border.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: black;
+  user-select: none; }
+  .attribute* {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .attribute .title {
+    flex: 18%;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px; }
+  .attribute .bonus {
+    flex: 50%;
+    font-size: 44px;
+    border: 1px solid red;
+    border-bottom-style: none;
+    border-radius: 8px;
+    padding: 0 6px;
+    cursor: pointer; }
+  .attribute .base {
+    flex: 32%;
+    font-size: 23px; }
